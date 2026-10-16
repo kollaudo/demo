@@ -1,0 +1,16 @@
+# The rules of the demo shop, kept by Kollaudo. Made up, like everything in this project.
+#
+# Every environment needs e2e tests. Staging also needs smoke tests, and counts only the tests that
+# ran while the version was deployed there. Production needs smoke tests, and its versions come
+# from staging: a deployment without a pass there first is marked ungated.
+default:
+  require: [e2e]
+
+environments:
+  staging:
+    require: [e2e, smoke]
+    deployed: true
+
+  production:
+    require: [smoke]
+    from: staging

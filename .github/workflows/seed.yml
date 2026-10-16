@@ -1,0 +1,40 @@
+name: Seed
+
+# Writes the scenario into the demo project of the Kollaudo instance. The whole scenario runs on
+# demand, once after the project is created. The override lasts at most 24 hours, so it is renewed
+# twice a day. Without it, billing would fail in staging, which is still true but not the story.
+on:
+  workflow_dispatch:
+    inputs:
+      what:
+        description: What to write
+        type: choice
+        options: [override, scenario]
+        default: override
+  schedule:
+    - cron: "17 5,17 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seed
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Write ${{ inputs.what || 'override' }}
+        run: |
+          if [[ $WHAT == scenario ]]; then ./seed.sh; else ./seed.sh override; fi
+        env:
+          WHAT: ${{ inputs.what || 'override' }}
+          KOLLAUDO_URL: ${{ vars.KOLLAUDO_URL }}
+          DEMO_INGEST_TOKEN: ${{ secrets.DEMO_INGEST_TOKEN }}
+          DEMO_POLICY_TOKEN: ${{ secrets.DEMO_POLICY_TOKEN }}
+          DEMO_OVERRIDE_TOKEN: ${{ secrets.DEMO_OVERRIDE_TOKEN }}
+          DEMO_GATE_TOKEN: ${{ secrets.DEMO_GATE_TOKEN }}
