@@ -29,8 +29,14 @@ jobs:
         with:
           node-version: 24
       - name: Write ${{ inputs.what || 'override' }}
+        # Until the demo is set up, the scheduled renewal has nothing to renew: it says so and stops.
         run: |
-          if [[ $WHAT == scenario ]]; then ./seed.sh; else ./seed.sh override; fi
+          if [[ $WHAT == scenario ]]; then ./seed.sh; exit; fi
+          if [[ -z $DEMO_OVERRIDE_TOKEN ]]; then
+            echo "::notice::No DEMO_OVERRIDE_TOKEN yet: set up the demo (see the README), then run the scenario."
+            exit 0
+          fi
+          ./seed.sh override
         env:
           WHAT: ${{ inputs.what || 'override' }}
           KOLLAUDO_URL: ${{ vars.KOLLAUDO_URL }}

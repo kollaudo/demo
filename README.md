@@ -29,7 +29,9 @@ deployments, test runs as CTRF reports, the verdicts the gate asks for, and the 
 
 - **the whole scenario**, on demand, once the project exists: Actions, *Seed*, *Run workflow*,
   `scenario`;
-- **the override**, twice a day, since an override lasts at most 24 hours.
+- **the override**, twice a day, since an override lasts at most 24 hours. The schedule is in UTC,
+  and GitHub can start scheduled runs hours late. Until the secrets are set, these runs stop with
+  a notice.
 
 GitHub turns off scheduled workflows of a public repository after 60 days without activity. When
 it does, the override expires and billing fails in staging: run the workflow again to turn it back
