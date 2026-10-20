@@ -14,8 +14,8 @@ In `dev`, everything passes. The rules are in [`policy.yaml`](policy.yaml).
 
 ## Open it
 
-1. Open https://kollaudo-production.up.railway.app.
-2. Add a project with this read token: `<read token of the demo project>`. It can only read this
+1. Open https://demo.kollaudo.dev.
+2. Add a project with this read token: `kol_VQ81iRttbMjk4pck5KXQ9gEbzLTMlgJAxWud2NIJ3us`. It can only read this
    made-up project.
 
 The instance also gates the releases of Kollaudo itself, in another project that this token can't
